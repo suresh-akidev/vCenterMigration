@@ -1,0 +1,55 @@
+#importing System Defined Modules
+import threading
+import time
+import csv
+import os
+
+#Importing User Defined Modules
+import ExecuteMigration
+
+#Variable Decleration
+i = 0
+rowData = []
+threads = []
+status = "Run"
+threadEnum = []
+CurrentVMStatus = ""
+
+with open('c:\\temp\\Book1.csv') as csvfile:
+    readCSV = csv.reader(csvfile, delimiter=',')
+    for row in readCSV:
+        #print(row)
+        if i != 0:
+            rowData.append(row)
+            hostname = row[0]
+            OSVersion = row[1]
+            CPU = row[2]
+            Memory = row[3]
+        #print(row[0],row[1],row[2],)
+        i = i + 1
+
+    for VMInfo in rowData:
+        VMName = VMInfo[0]
+        ThreadName = VMInfo[0]
+        threadVar = threading.Thread(target = ExecuteMigration.ExecMigration,args = (VMInfo,),name = ThreadName)
+        threads.append(threadVar)
+        threadVar.start()
+
+while status == "Run":
+    os.system('cls')
+    print("=====================================")
+    print(" VM Name     | Status ")
+    print("=====================================")
+    for threadStatus in threads:
+        if threadStatus.is_alive() == True:
+            CurrentVMStatus = "Still In Progress"
+
+        if threadStatus.is_alive() == False:
+            CurrentVMStatus = "Execution is completed"
+
+        print(" ",threadStatus.name, "    | ",CurrentVMStatus)
+        threadEnum = threading.enumerate()
+        if len(threadEnum) == 1:
+            status = "Completed"
+
+    time.sleep(3)
