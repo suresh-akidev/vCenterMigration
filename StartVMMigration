@@ -37,9 +37,9 @@ with open('c:\\temp\\Book1.csv') as csvfile:
 
 while status == "Run":
     os.system('cls')
-    print("=====================================")
-    print(" VM Name     | Status ")
-    print("=====================================")
+    print("=========================================================")
+    print(" VM Name                        | Overall Status ")
+    print("=========================================================")
     for threadStatus in threads:
         if threadStatus.is_alive() == True:
             CurrentVMStatus = "Still In Progress"
@@ -53,3 +53,17 @@ while status == "Run":
             status = "Completed"
 
     time.sleep(3)
+    #os.system('cls')
+
+    print("\n############################   LOGS   #####################################")
+    for threadStatus in threads:
+        #if threadStatus.is_alive() == True:
+            print("\n----------------",threadStatus.name,"------------------------")
+            #vmLogFileR = "c:\\temp\\" + threadStatus.name + ".txt"
+            #logFileR = open(vmLogFileR, "r")
+            #print(logFileR.read())
+            #logFileR.close()
+
+
+    time.sleep(10)
+
