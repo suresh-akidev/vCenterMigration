@@ -1,0 +1,13 @@
+import time
+import random
+from vconnector.core import VConnector
+
+def ExecMigration(migrateVMInfo):
+    #print('[', time.ctime(), threadName, ']')
+    time.sleep(random.randint(10,30))
+    print("VMInfo")
+    print("====================================")
+    print(migrateVMInfo)
+
+
+
