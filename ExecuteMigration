@@ -1,13 +1,65 @@
 import time
 import random
-from vconnector.core import VConnector
+#from vconnector.core import VConnector
 
 def ExecMigration(migrateVMInfo):
     #print('[', time.ctime(), threadName, ']')
-    time.sleep(random.randint(10,30))
-    print("VMInfo")
-    print("====================================")
-    print(migrateVMInfo)
+    time.sleep(random.randint(5,10))
+    global cmoVMFQDN
+    global fmoVMFQDN
+    global tmoDataCenter
+    global tmoDatastore
+    global fmoDatacenter
+    global fmoESXCluster
+    global fmoDatastore
+    global fmoNIC1Name
+    global fmoNIC2Name
+    global nic1IPAddress
+    global nic1Subnet
+    global nic1Gateway
+    global nic1DNS1
+    global nic1DNS2
+    global osFlavour
+    global csaProjectId
+    global site
+    global migrationType
+    global logFile
+
+    cmoVMFQDN = migrateVMInfo[0]
+    fmoVMFQDN = migrateVMInfo[1]
+    tmoDataCenter = migrateVMInfo[2]
+    tmoDatastore = migrateVMInfo[3]
+    fmoDatacenter = migrateVMInfo[4]
+    fmoESXCluster = migrateVMInfo[5]
+    fmoDatastore = migrateVMInfo[6]
+    fmoNIC1Name = migrateVMInfo[7]
+    fmoNIC2Name = migrateVMInfo[8]
+    nic1IPAddress = migrateVMInfo[9]
+    nic1Subnet = migrateVMInfo[10]
+    nic1Gateway = migrateVMInfo[11]
+    nic1DNS1 = migrateVMInfo[12]
+    nic1DNS2 = migrateVMInfo[13]
+    osFlavour = migrateVMInfo[14]
+    csaProjectId = migrateVMInfo[15]
+    site = migrateVMInfo[16]
+    migrationType = migrateVMInfo[17]
+
+    vmLogFile = "c:\\temp\\" + cmoVMFQDN + ".txt"
+    logFile = open(vmLogFile, "w")
+
+    prevalidation()
 
 
+def prevalidation():
+    time.sleep(random.randint(5, 10))
+    if site == "Houston":
+        # client = VConnector(user = 'root',pwd = 'p4ssw0rd',host = 'vc01.example.org')
+        logFile.write(cmoVMFQDN + " : Houston vCenter Connection : Success # ")
 
+    if site == "Plano":
+        # client = VConnector(user = 'root',pwd = 'p4ssw0rd',host = 'vc01.example.org')
+        logFile.write(cmoVMFQDN + " : Plano vCenter Connection : Success # ")
+
+    time.sleep(random.randint(5, 10))
+    logFile.write(cmoVMFQDN + " : Pre-Validation : Success # ")
+    #logFile.close()
