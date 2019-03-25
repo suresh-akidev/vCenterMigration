@@ -7,7 +7,71 @@ import os
 #Importing User Defined Modules
 import ExecuteMigration
 
-#Variable Decleration
+class startVMMigrate(threading.Thread):
+
+    def __init__(self,migrateVMInfo):
+        threading.Thread.__init__(self)
+
+        #print("Constructer has been called as soon as object is created")
+        '''self.VMInfo = VMInfo
+        #self.VMInfo = "AKILAN"
+        #VMInfo = "SURESH"
+        print("VMinfo : ", self.VMInfo)
+        '''
+
+        self.cmoVMFQDN = migrateVMInfo[0]
+        self.fmoVMFQDN = migrateVMInfo[1]
+        self.tmoDataCenter = migrateVMInfo[2]
+        self.tmoDatastore = migrateVMInfo[3]
+        self.fmoDatacenter = migrateVMInfo[4]
+        self.fmoESXCluster = migrateVMInfo[5]
+        self.fmoDatastore = migrateVMInfo[6]
+        self.fmoNIC1Name = migrateVMInfo[7]
+        self.fmoNIC2Name = migrateVMInfo[8]
+        self.nic1IPAddress = migrateVMInfo[9]
+        self.nic1Subnet = migrateVMInfo[10]
+        self.nic1Gateway = migrateVMInfo[11]
+        self.nic1DNS1 = migrateVMInfo[12]
+        self.nic1DNS2 = migrateVMInfo[13]
+        self.osFlavour = migrateVMInfo[14]
+        self.csaProjectId = migrateVMInfo[15]
+        self.site = migrateVMInfo[16]
+        self.migrationType = migrateVMInfo[17]
+
+        self.vmLogFilePath = "c:\\temp\\" + self.cmoVMFQDN + ".txt"
+
+        self.createLogFileMethod(self.vmLogFilePath, "w")
+
+    def run(self):
+        #print("RUN Method has been called as thread is set to start")
+        #self.ExecuteMigrationMethod()
+        ExecuteMigration.ExecuteMigrationClass.prevalidationMethod(self)
+
+
+
+    ''' def ExecuteMigrationMethod(self):
+        #print("Execute Migration : ", self.cmoVMFQDN)
+        ExecuteMigration.ExecuteMigrationClass.prevalidationMethod(self)
+    '''
+
+    def createLogFileMethod(self,logFilePath,mode):
+        #self.logFile = "c:\\temp\\" + self.cmoVMFQDN + ".txt"
+        #self.logFile = open(self.vmLogFile, "w")
+        logFile = open(logFilePath, mode)
+        logFile.close()
+
+    def writeLogFileMethod(self,logFilePath,mode,logMsg):
+        logFile = open(logFilePath, mode)
+        logFile.write(logMsg)
+        logFile.close()
+
+    def readLogFileMethod(self, logFilePath, mode):
+        logFile = open(logFilePath, mode)
+        #print(logFile.read())
+        return logFile
+        logFile.close()
+
+# Variable Decleration
 i = 0
 rowData = []
 threads = []
@@ -15,25 +79,31 @@ status = "Run"
 threadEnum = []
 CurrentVMStatus = ""
 
+# Reading CSV file
 with open('c:\\temp\\Book1.csv') as csvfile:
     readCSV = csv.reader(csvfile, delimiter=',')
     for row in readCSV:
-        #print(row)
         if i != 0:
             rowData.append(row)
             hostname = row[0]
             OSVersion = row[1]
             CPU = row[2]
             Memory = row[3]
-        #print(row[0],row[1],row[2],)
+        # print(row[0],row[1],row[2],)
         i = i + 1
 
     for VMInfo in rowData:
         VMName = VMInfo[0]
         ThreadName = VMInfo[0]
-        threadVar = threading.Thread(target = ExecuteMigration.ExecMigration,args = (VMInfo,),name = ThreadName)
-        threads.append(threadVar)
-        threadVar.start()
+        print("\nVM Name : ",VMName)
+        obj = startVMMigrate(VMInfo)
+        print("               ---  Starting Execution")
+        obj.start()
+        obj.setName(ThreadName)
+        #print("Value of Obj : ", obj)
+        threads.append(obj)
+        print("               ---  Started Execution")
+        time.sleep(1)
 
 while status == "Run":
     os.system('cls')
@@ -47,23 +117,21 @@ while status == "Run":
         if threadStatus.is_alive() == False:
             CurrentVMStatus = "Execution is completed"
 
-        print(" ",threadStatus.name, "    | ",CurrentVMStatus)
+        print(" ", threadStatus.name, "    | ", CurrentVMStatus)
         threadEnum = threading.enumerate()
         if len(threadEnum) == 1:
             status = "Completed"
 
-    time.sleep(3)
-    #os.system('cls')
-
     print("\n############################   LOGS   #####################################")
     for threadStatus in threads:
-        #if threadStatus.is_alive() == True:
-            print("\n----------------",threadStatus.name,"------------------------")
-            #vmLogFileR = "c:\\temp\\" + threadStatus.name + ".txt"
-            #logFileR = open(vmLogFileR, "r")
-            #print(logFileR.read())
-            #logFileR.close()
+        # if threadStatus.is_alive() == True:
+        print("\n----------------", threadStatus.name, "------------------------")
+        vmLogFileR = "c:\\temp\\" + threadStatus.name + ".txt"
+        logFileR = open(vmLogFileR, "r")
+        print(logFileR.read())
+        logFileR.close()
 
 
-    time.sleep(10)
+
+
 
