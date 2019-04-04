@@ -1,0 +1,14 @@
+database = {
+    'dbHost': 'localhost',
+    'dbName': 'company',
+    'port': 3306
+}
+
+vcenter = {
+    'vcenterHost': '130.175.178.131',
+    'vcenterPort': '443'
+}
+
+hpsa = {
+    'hpsaIP' : 'asdf'
+}
