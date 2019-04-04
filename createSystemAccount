@@ -1,0 +1,20 @@
+from cryptography.fernet import Fernet
+import getpass
+
+key = b'F3KpnG4tm_YjCNXio_rCWYIlPW3iyPfacblLayS8Swg='
+sysAccount = input("Enter System Account Name: ")
+username = input("Enter the username : ")
+username = username + "###"
+usernameBinary = username.encode('utf-8')
+print(usernameBinary)
+password = getpass.getpass("Enter the password: ")
+convertPassToBinary = password.encode('utf-8')
+cipher_suite = Fernet(key)
+ciphered_text = cipher_suite.encrypt(convertPassToBinary)
+print(ciphered_text)
+sysAccountFilePath = "c:\\temp\\SystemAccounts\\" + sysAccount + ".sysacc"
+sysAccountFile = open(sysAccountFilePath, 'wb')
+sysAccountFile.write(usernameBinary )
+sysAccountFile.write(ciphered_text)
+sysAccountFile.close()
+#with open('c:\temp\savedfiles\mssqltip_bytes.bin', 'wb') as file_object:  file_object.write(ciphered_text)
