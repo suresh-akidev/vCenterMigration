@@ -6,6 +6,7 @@ import os
 
 #Importing User Defined Modules
 import ExecuteMigration
+import ReadingSystemAccounts
 
 class startVMMigrate(threading.Thread):
 
@@ -38,16 +39,16 @@ class startVMMigrate(threading.Thread):
         self.site = migrateVMInfo[16]
         self.migrationType = migrateVMInfo[17]
 
-        self.vmLogFilePath = "c:\\temp\\" + self.cmoVMFQDN + ".txt"
+        self.sysAccountFolderPath = "c:\\temp\\SystemAccounts\\"
 
+        self.vmLogFilePath = "c:\\temp\\" + self.cmoVMFQDN + ".txt"
         self.createLogFileMethod(self.vmLogFilePath, "w")
 
     def run(self):
         #print("RUN Method has been called as thread is set to start")
         #self.ExecuteMigrationMethod()
+        ReadingSystemAccounts.readingSystemAccountClass.readingSystemAccountMethod(self)
         ExecuteMigration.ExecuteMigrationClass.prevalidationMethod(self)
-
-
 
     ''' def ExecuteMigrationMethod(self):
         #print("Execute Migration : ", self.cmoVMFQDN)
@@ -98,12 +99,16 @@ with open('c:\\temp\\Book1.csv') as csvfile:
         print("\nVM Name : ",VMName)
         obj = startVMMigrate(VMInfo)
         print("               ---  Starting Execution")
+        obj.daemon = True
         obj.start()
         obj.setName(ThreadName)
         #print("Value of Obj : ", obj)
         threads.append(obj)
         print("               ---  Started Execution")
         time.sleep(1)
+
+print("LAST LINE OF MAIN THREAD/PROGRAM")
+
 
 while status == "Run":
     os.system('cls')
@@ -130,8 +135,4 @@ while status == "Run":
         logFileR = open(vmLogFileR, "r")
         print(logFileR.read())
         logFileR.close()
-
-
-
-
 
