@@ -1,0 +1,6 @@
+from cryptography.fernet import Fernet
+key = b'F3KpnG4tm_YjCNXio_rCWYIlPW3iyPfacblLayS8Swg='
+cipher_suite = Fernet(key)
+ciphered_text = b'gAAAAABcmeTo9glpllOEV46s_7eZZ1m6PUzBV3fB6veKq5g43z4eyUFh0B1PRQepFuiS83BW9Z8w-QLWVsLaZ1x69PyEhNxfQA=='
+unciphered_text = (cipher_suite.decrypt(ciphered_text))
+print(unciphered_text)
