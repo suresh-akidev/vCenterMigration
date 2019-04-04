@@ -5,6 +5,8 @@ import sys
 import sendMail
 from vconnector.core import VConnector
 
+import systemproperty
+
 #import StartVMMigration
 
 #class ExecuteMigrationClass(StartVMMigration.startVM):
@@ -14,9 +16,12 @@ class ExecuteMigrationClass():
 
     def prevalidationMethod(self):
         #time.sleep(random.randint(5, 10))
+        time.sleep(20)
         if self.site == "Houston":
             try:
-                client = VConnector(user='Administrator@vsphere.local', pwd='Start123$', host='130.175.178.130')
+                #self.writeLogFileMethod(self.vmLogFilePath, "a", self.vcenterPassword)
+                vcenterHost = systemproperty.vcenter['vcenterHost']
+                client = VConnector(user=self.vcenterUserName, pwd=self.vcenterPassword, host=vcenterHost)
                 client.connect()
                 self.writeLogFileMethod(self.vmLogFilePath, "a", "vCenter Connection of Houston : Success ## ")
                 #sendMail.sendMailMethod("python@dxc.com", "suresh.r2@dxc.com;manjunatha.venugopal@dxc.com", "Success on connect vCenter")
