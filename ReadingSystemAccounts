@@ -1,0 +1,35 @@
+from cryptography.fernet import Fernet
+import os
+
+class readingSystemAccountClass():
+
+    def __init__(self):
+        self.sysAccountFolderPath = "c:\\temp\\SystemAccounts\\"
+
+    def readingSystemAccountMethod(self):
+
+        key = b'F3KpnG4tm_YjCNXio_rCWYIlPW3iyPfacblLayS8Swg='
+        cipher_suite = Fernet(key)
+        sysAccountFiles = os.listdir(self.sysAccountFolderPath)
+        for sysAccountFile in sysAccountFiles:
+            print(sysAccountFile)
+            sysAccountFilePath = self.sysAccountFolderPath + sysAccountFile
+            sysAccountFileRead = open(sysAccountFilePath, 'rb')
+            sysAccounts = sysAccountFileRead.read()
+            splitString = "###"
+            splitString = splitString.encode('utf-8')
+            sysAccounts = sysAccounts.split(splitString)
+            username = sysAccounts[0]
+            password =  sysAccounts[1]
+            unciphered_text = (cipher_suite.decrypt(password))
+            if sysAccountFile == "vcenter.sysacc":
+                self.vcenterUserName = username
+                self.vcenterPassword =  unciphered_text
+                self.vcenterUserName =self.vcenterUserName.decode('utf-8')
+                self.vcenterPassword = self.vcenterPassword.decode('utf-8')
+                #print(self.vcenterUserName)
+                #print(self.vcenterPassword)
+
+
+#t = readingSystemAccountClass()
+#t.readingSystemAccountMethod()
